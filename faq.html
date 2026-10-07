@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ICS-Sniper FAQ</title>
+<meta name="description" content="Frequently asked questions about ICS-Sniper: the threat model, detection, defenses, and reproducing the work.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ================= NAV ================= -->
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="index.html" aria-label="ICS-Sniper home">
+      <svg class="reticle" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.6"/>
+        <path d="M12 1.5v4M12 18.5v4M1.5 12h4M18.5 12h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        <circle cx="12" cy="12" r="1.6" fill="currentColor"/>
+      </svg>
+      ICS-Sniper
+    </a>
+    <nav class="nav-links" id="navlinks">
+      <a href="index.html#threat">The threat</a>
+      <a href="index.html#how">How it works</a>
+      <a href="index.html#results">Results</a>
+      <a href="index.html#stealth">Why it hides</a>
+      <a href="index.html#defend">Defenses</a>
+      <a href="index.html#code">Code</a>
+      <a href="faq.html" aria-current="page">FAQ</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="theme" aria-label="Switch color theme" title="Switch theme">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.6 6.6 0 0 0 9.8 9.8Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      </button>
+      <a class="btn btn-primary" href="index.html#code">Get the code</a>
+      <button class="icon-btn menu-toggle" id="menu" aria-label="Open menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ================= FAQ ================= -->
+<section class="band">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kicker">Frequently asked questions</span>
+    </div>
+
+
+    <section class="faq-cat">
+      <h3>Scope and threat model</h3>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>
+            <span>Is this just a denial-of-service attack with extra steps?</span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </summary>
+          <div class="faq-a">
+            <p>No. A volumetric DoS floods the link and trips volume-based detectors. ICS-Sniper adds no traffic and drops under 5% of a cycle’s packets in two short, precisely chosen windows, and it leaves liveness-check probes untouched so the link still looks alive. The novelty is identifying which few encrypted packets matter without ever seeing their contents.</p>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>
+            <span>Does the attacker break the VPN encryption?</span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </summary>
+          <div class="faq-a">
+            <p>No. ICS-Sniper never decrypts anything. It works purely from traffic metadata (packet sizes, timing, and direction), which a VPN leaves exposed even though it hides the payload.</p>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>
+            <span>Does the attacker need to know the plant’s control logic?</span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </summary>
+          <div class="faq-a">
+            <p>No. The attacker does not need to know the control logic, cryptographic secrets, or have payload access. ICS-Sniper assumes only the general properties of ICS traffic: that site-to-SCADA communication is periodic, and that each process state has its own characteristic traffic pattern.</p>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>
+            <span>How realistic is the attacker’s position?</span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </summary>
+          <div class="faq-a">
+            <p>It requires covert, persistent control of one ISP or provider-edge router on the path between the plant and its cloud-hosted SCADA. That is exactly the foothold granted by Cisco and Juniper router vulnerabilities publicly disclosed on search engines like Shodan, which is why we model the adversary as a rogue ISP insider or a nation-state actor. Gaining that foothold is non-trivial and is not something our released artifacts provide.</p>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>
+            <span>Can this be used against the real SWaT plant?</span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </summary>
+          <div class="faq-a">
+            <p>No. The reference SWaT plant’s OT network is air-gapped and not Internet-connected, so the attack cannot be turned against it. All our experiments ran on simulated and cloud-based testbeds with no physical components.</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <section class="faq-cat">
+      <h3>Where it applies</h3>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>
+            <span>Does this only affect water treatment?</span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </summary>
+          <div class="faq-a">
+            <p>Water treatment is our case study because SWaT is the only openly available, realistic multi-process control logic. The technique itself depends only on periodic request-response traffic, so it applies to the broader class of batch-processing ICS, including water, wastewater, and discrete manufacturing, and generalizes across OT protocols (Modbus, ENIP, and IEC 61850 MMS, including a power-grid dataset).</p>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>
+            <span>How common is the configuration it targets?</span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </summary>
+          <div class="faq-a">
+            <p>Cloud-hosted SCADA with site-to-SCADA traffic carried over a VPN is a recent but rapidly growing architecture, as confirmed by multiple vendors and industrial security practitioners. Plants don’t publish their network designs for security reasons, so no exact count exists, but the SANS 2024 State of ICS/OT Cybersecurity survey documents a surge in adoption, with water and wastewater utilities across the US, Canada, Mexico, Australia, and New Zealand among the early adopters. The exposure grows as more plants move SCADA to the cloud. Therefore, we think it is important to fix the new vulnerabilities before more widespread adoption.</p>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>
+            <span>What about plants that keep SCADA on-site?</span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </summary>
+          <div class="faq-a">
+            <p>The exposure exists only once SCADA traffic crosses the public Internet. A fully on-premise or air-gapped SCADA is outside this threat model.</p>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>
+            <span>Does it work against continuous-processing plants?</span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </summary>
+          <div class="faq-a">
+            <p>Not as presented. ICS-Sniper relies on the difference between a batch plant’s active and idle phases. Continuous processes lack those distinct phases, which is a genuine limitation and part of our future work.</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <section class="faq-cat">
+      <h3>Impact and detection</h3>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>
+            <span>What is the actual impact?</span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </summary>
+          <div class="faq-a">
+            <p>On our water-treatment testbeds, one attack delayed the start of purified-water distribution by about 15 minutes; another caused a loss of already-treated water for 9 minutes 11 seconds. Such stalls delay clean water supply, waste treated water, and slow down production. In a real deployment, these effects would ripple outward to downstream facilities and the communities that depend on the supply.</p>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>
+            <span>We run a VPN, firewalls, intrusion detection, and DoS monitoring. Aren’t we covered?</span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </summary>
+          <div class="faq-a">
+            <p>Those are the four standard NIST/AWS safeguards, and ICS-Sniper is designed to bypass all of them. The VPN is the very channel it reads; the monitored detectors are built for volume spikes, not for a handful of well-timed drops. In our evaluation against an ensemble of eight state-of-the-art ICS detectors, no monitored detector flagged the attack before the plant’s performance had already degraded.</p>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>
+            <span>Why don’t the detectors catch it?</span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </summary>
+          <div class="faq-a">
+            <p>Network detectors are event-driven. They fire on packet arrival, not on a brief silence, which is what a dropped burst looks like. And ICS-Sniper introduces no spoofed ARP, no altered payloads, and no extra traffic for conventional defenses to key on. Catching it would likely require actively polling the link in step with each PLC’s rhythm, which is an open research problem rather than a setting on an existing tool.</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <section class="faq-cat">
+      <h3>Defenses and disclosure</h3>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>
+            <span>What can operators do today?</span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </summary>
+          <div class="faq-a">
+            <p>Because the attack needs a compromised on-path device to function, hardening routers and monitoring the ISP path still matters. Beyond that, the paper points to three directions: shaping traffic to hide the periodic pattern, diversifying the network path so one compromised hop can’t blackhole the flow, and rhythm-synchronized liveness polling. None is fully solved yet.</p>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>
+            <span>Why publish an attack at all?</span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </summary>
+          <div class="faq-a">
+            <p>We weighed the risks using the Menlo Report's beneficence principle and concluded the defensive benefit outweighs the residual risk. There was no vulnerability to disclose confidentially: ICS-Sniper isn't a single-vendor bug but a weakness of the architecture itself—metadata that leaks through VPN encryption, combined with already-public router CVEs. Publishing now, while cloud-hosted SCADA is still early in adoption, gives operators and vendors time to build defenses before these systems become widespread. We've also shared the findings with the security and ICS communities, including at the National Cybersecurity Consortium.</p>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>
+            <span>What are you releasing, and is it safe to release?</span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </summary>
+          <div class="faq-a">
+            <p>We release the attack code, the detector ensemble, implementation details of two types of testbeds, and the captured network traces, so others can reproduce our results and build detection and mitigation techniques on top of them. The safeguards are contextual: everything pertains to emulated testbeds with no physical components, and running the attack in the wild still requires covert control of an on-path router, which the artifacts do not provide.</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap foot-grid">
+    <div>
+      <div class="cite">
+        <div class="ttl">ICS-Sniper: A Targeted Blackhole Attack on Encrypted ICS Traffic</div>
+        To appear at the Network and Distributed System Security (NDSS) Symposium 2027, Seoul, Republic of Korea.
+      </div>
+      <p class="ethics">Responsible disclosure: all attacks were run only on simulated and cloud-based testbeds. The reference SWaT plant's real OT system is not connected to the Internet, so this work cannot be used against it. Published to help operators and researchers build stronger defenses for cloud-connected OT networks — not to enable attacks.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>

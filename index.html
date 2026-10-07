@@ -8,381 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  /* ---------- Theme tokens: dark default, light fallback + explicit overrides ---------- */
-  :root{
-    --bg:#0b141d;
-    --bg-2:#0e1922;
-    --surface:#111e29;
-    --surface-2:#152430;
-    --text:#e6edf3;
-    --muted:#93a6b6;
-    --faint:#6b7f8f;
-    --border:rgba(150,180,200,.14);
-    --border-strong:rgba(150,180,200,.24);
-    --amber:#ffb020;
-    --amber-ink:#ffb020;
-    --amber-soft:rgba(255,176,32,.13);
-    --amber-line:rgba(255,176,32,.42);
-    --cyan:#41c8d8;
-    --cyan-ink:#41c8d8;
-    --cyan-soft:rgba(65,200,216,.11);
-    --cyan-line:rgba(65,200,216,.35);
-    --grid:rgba(120,160,185,.08);
-    --burst:#40708a;
-    --shadow:0 24px 60px -30px rgba(0,0,0,.75);
-
-    box-sizing:border-box;
-    padding-top:env(safe-area-inset-top,0px);
-    padding-bottom:env(safe-area-inset-bottom,0px);
-    color-scheme:dark;
-  }
-  @media (prefers-color-scheme: light){
-    :root:not([data-theme="dark"]){
-      --bg:#eef2f5;--bg-2:#e7edf1;--surface:#ffffff;--surface-2:#f3f7f9;
-      --text:#0f2230;--muted:#526676;--faint:#7c8d9b;
-      --border:rgba(18,44,64,.12);--border-strong:rgba(18,44,64,.2);
-      --amber:#e6960f;--amber-ink:#a8650a;--amber-soft:rgba(230,150,15,.12);--amber-line:rgba(230,150,15,.5);
-      --cyan:#0e93a5;--cyan-ink:#0a7583;--cyan-soft:rgba(14,147,165,.09);--cyan-line:rgba(14,147,165,.4);
-      --grid:rgba(20,60,85,.07);--burst:#8fb2c4;
-      --shadow:0 22px 50px -32px rgba(20,50,70,.4);
-      color-scheme:light;
-    }
-  }
-  :root[data-theme="light"]{
-    --bg:#eef2f5;--bg-2:#e7edf1;--surface:#ffffff;--surface-2:#f3f7f9;
-    --text:#0f2230;--muted:#526676;--faint:#7c8d9b;
-    --border:rgba(18,44,64,.12);--border-strong:rgba(18,44,64,.2);
-    --amber:#e6960f;--amber-ink:#a8650a;--amber-soft:rgba(230,150,15,.12);--amber-line:rgba(230,150,15,.5);
-    --cyan:#0e93a5;--cyan-ink:#0a7583;--cyan-soft:rgba(14,147,165,.09);--cyan-line:rgba(14,147,165,.4);
-    --grid:rgba(20,60,85,.07);--burst:#8fb2c4;
-    --shadow:0 22px 50px -32px rgba(20,50,70,.4);
-    color-scheme:light;
-  }
-  :root[data-theme="dark"]{ color-scheme:dark; }
-
-  *,*::before,*::after{box-sizing:inherit}
-  html{scroll-behavior:smooth;scroll-padding-top:calc(72px + env(safe-area-inset-top,0px));-webkit-text-size-adjust:100%}
-  body{
-    margin:0;background:var(--bg);color:var(--text);
-    font-family:"Space Grotesk",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-    font-size:1.0625rem;line-height:1.62;font-weight:400;
-    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
-    overflow-x:hidden;
-  }
-  .mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
-
-  /* ---------- Layout ---------- */
-  .wrap{width:100%;max-width:1500px;margin:0 auto;padding:0 24px}
-  section{scroll-margin-top:calc(80px + env(safe-area-inset-top,0px))}
-  a{color:var(--cyan-ink);text-decoration:none}
-  a:hover{text-decoration:underline;text-underline-offset:3px}
-
-  h1,h2,h3{font-weight:600;letter-spacing:-.018em;line-height:1.1;margin:0}
-  h2{font-size:clamp(1.6rem,3.4vw,2.25rem);letter-spacing:-.022em}
-  h3{font-size:1.15rem;letter-spacing:-.01em;line-height:1.25}
-  p{margin:0 0 1rem}
-  .lede{font-size:1.15rem;color:var(--muted);max-width:64ch}
-
-  :focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:4px}
-
-  /* ---------- Nav ---------- */
-  header.nav{
-    position:sticky;top:env(safe-area-inset-top,0px);z-index:50;
-    background:color-mix(in srgb, var(--bg) 82%, transparent);
-    backdrop-filter:saturate(140%) blur(12px);
-    border-bottom:1px solid var(--border);
-  }
-  .nav-inner{display:flex;align-items:center;gap:18px;height:72px}
-  .brand{display:flex;align-items:center;gap:11px;font-weight:600;letter-spacing:-.02em;font-size:1.06rem;color:var(--text)}
-  .brand:hover{text-decoration:none}
-  .brand .reticle{width:22px;height:22px;flex:none;color:var(--amber)}
-  .nav-links{display:flex;gap:26px;margin-left:auto;align-items:center}
-  .nav-links a{color:var(--muted);font-size:.95rem;font-weight:500}
-  .nav-links a:hover{color:var(--text);text-decoration:none}
-  .nav-actions{display:flex;align-items:center;gap:10px;margin-left:8px}
-  .icon-btn{
-    display:inline-grid;place-items:center;width:38px;height:38px;border-radius:9px;
-    border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;
-  }
-  .icon-btn:hover{color:var(--text);border-color:var(--border-strong)}
-  .btn{
-    display:inline-flex;align-items:center;gap:9px;font-family:inherit;font-size:.95rem;font-weight:500;
-    padding:.62rem 1.05rem;border-radius:10px;border:1px solid transparent;cursor:pointer;line-height:1;
-  }
-  .btn svg{width:17px;height:17px;flex:none}
-  .btn-primary{background:var(--amber);color:#0b141d;border-color:var(--amber)}
-  .btn-primary:hover{filter:brightness(1.06);text-decoration:none}
-  .btn-ghost{background:var(--surface);color:var(--text);border-color:var(--border-strong)}
-  .btn-ghost:hover{border-color:var(--cyan-line);text-decoration:none}
-  .menu-toggle{display:none}
-  @media (max-width:860px){
-    .nav-links{display:none}
-    .menu-toggle{display:inline-grid}
-    .nav-links.open{
-      display:flex;flex-direction:column;align-items:flex-start;gap:0;
-      position:absolute;left:0;right:0;top:100%;background:var(--bg);
-      border-bottom:1px solid var(--border);padding:8px 24px 16px;margin:0;
-    }
-    .nav-links.open a{padding:12px 0;width:100%;border-bottom:1px solid var(--border);font-size:1rem}
-  }
-
-  /* ---------- Hero ---------- */
-  .hero{position:relative;padding:clamp(48px,7vw,88px) 0 clamp(40px,5vw,64px);overflow:hidden}
-  .hero::before{
-    content:"";position:absolute;inset:0;pointer-events:none;
-    background:
-      radial-gradient(680px 420px at 78% 8%, var(--cyan-soft), transparent 60%),
-      radial-gradient(560px 360px at 12% 96%, var(--amber-soft), transparent 62%);
-  }
-  .hero-inner{display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(28px,4vw,54px);align-items:center;position:relative}
-  @media (max-width:880px){.hero-inner{grid-template-columns:1fr;gap:36px}}
-  .hero-art{margin:0}
-  .hero-art svg{display:block;width:100%;height:auto;max-width:560px;margin-inline:auto}
-  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
-  .chip{
-    font-size:.78rem;font-weight:500;letter-spacing:.01em;padding:.34rem .66rem;border-radius:999px;
-    border:1px solid var(--border-strong);color:var(--muted);background:var(--surface);
-  }
-  .chip.accent{color:var(--amber-ink);border-color:var(--amber-line);background:var(--amber-soft)}
-  h1{font-size:clamp(2.05rem,4.7vw,3.35rem);font-weight:600;letter-spacing:-.03em;line-height:1.04;margin:0 0 20px}
-  .hero p.lede{margin-bottom:26px}
-  .nots{display:flex;flex-wrap:wrap;gap:10px 22px;margin:0 0 30px;padding:0;list-style:none}
-  .nots li{display:flex;align-items:center;gap:9px;font-size:.94rem;color:var(--muted)}
-  .nots li svg{width:16px;height:16px;color:var(--amber);flex:none}
-  .hero-cta{display:flex;flex-wrap:wrap;gap:12px}
-
-  /* Scope figure */
-  .scope{
-    position:relative;border:1px solid var(--border-strong);border-radius:16px;background:var(--surface);
-    box-shadow:var(--shadow);overflow:hidden;
-  }
-  .scope-head{display:flex;align-items:center;gap:8px;padding:11px 14px;border-bottom:1px solid var(--border);color:var(--faint);font-size:1.5rem}
-  .scope-head .dot{width:8px;height:8px;border-radius:50%;background:var(--burst)}
-  .scope-head .dot.a{background:var(--amber)}
-  .scope-head .label{margin-left:auto;letter-spacing:.02em}
-  .scope svg{display:block;width:100%;height:auto}
-  .cap{margin-top:14px;font-size:1.0rem;color:var(--faint);max-width:140ch}
-
-  /* Trend / the shift */
-  .drivers{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin:36px 0 30px}
-  .driver{padding-top:16px;border-top:2px solid var(--cyan-line)}
-  .driver h3{font-size:1.03rem;margin-bottom:8px}
-  .driver p{color:var(--muted);font-size:.95rem;margin:0}
-  .shift-note{max-width:140ch;color:var(--muted);border-left:3px solid var(--cyan);padding-left:22px;margin:0 0 36px;font-size:1.04rem;line-height:1.55}
-  .shift-note b{color:var(--text);font-weight:600}
-  @media (max-width:760px){.drivers{grid-template-columns:1fr;gap:22px}}
-
-  /* Authors */
-  .authors{display:flex;flex-wrap:wrap;justify-content:center;gap:20px;margin-top:8px}
-  .author{
-    flex:0 1 190px;box-sizing:border-box;
-    display:flex;flex-direction:column;align-items:center;text-align:center;
-    border:1px solid var(--border);border-radius:14px;background:var(--surface);padding:15px 10px;
-  }
-  @media (max-width:520px){.author{flex-basis:100%}}
-  .avatar{
-    width:88px;height:88px;border-radius:50%;overflow:hidden;margin-bottom:15px;flex:none;
-    display:grid;place-items:center;background:var(--surface-2);
-    box-shadow:0 0 0 1px var(--border-strong), 0 0 0 5px var(--cyan-soft);
-    font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:1.5rem;letter-spacing:.02em;color:var(--cyan-ink);
-  }
-  .avatar img{width:100%;height:100%;object-fit:cover;display:block}
-  .author .name{font-weight:600;font-size:1.03rem;line-height:1.25}
-  .author .role{color:var(--cyan-ink);font-size:.82rem;font-weight:500;margin-top:6px}
-  .author .aff{color:var(--muted);font-size:.9rem;margin-top:5px;line-height:1.4}
-  .author .site{
-    display:inline-flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px;
-    margin-top:14px;font-size:.85rem;font-weight:500;color:var(--cyan-ink);max-width:100%;word-break:break-word;
-  }
-  .author .site svg{width:14px;height:14px;flex:none}
-
-  /* ---------- Generic blocks ---------- */
-  .band{padding:clamp(48px,6vw,86px) 0;border-top:1px solid var(--border)}
-  .band.tint{background:var(--bg-2)}
-  .sec-head{max-width:140ch;margin-bottom:38px}
-  .sec-head p{color:var(--muted);margin-top:14px;margin-bottom:0}
-  .kicker{display:inline-block;font-size:2rem;font-weight:600;color:var(--cyan-ink);margin-bottom:12px;letter-spacing:0}
-
-  /* TL;DR statement */
-  .statement{
-    border-left:3px solid var(--amber);padding:6px 0 6px 26px;
-    font-size:clamp(1.25rem,2.6vw,1.7rem);font-weight:500;letter-spacing:-.015em;line-height:1.32;max-width:34ch;
-  }
-  .tldr-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(28px,4vw,60px);align-items:center}
-  .facts{display:grid;gap:14px}
-  .fact{display:flex;gap:14px;align-items:flex-start}
-  .fact .n{font-family:"IBM Plex Mono",monospace;font-weight:600;color:var(--cyan-ink);font-size:.95rem;flex:none;width:58px;padding-top:2px}
-  .fact p{margin:0;color:var(--muted);font-size:.98rem}
-  .fact strong{color:var(--text);font-weight:600}
-  @media (max-width:760px){.tldr-grid{grid-template-columns:1fr}}
-
-  /* Flow diagram */
-  .flow{border:1px solid var(--border);border-radius:14px;background:var(--surface);padding:8px;margin-top:8px}
-  .flow svg{display:block;width:100%;height:auto}
-
-  /* Two stages */
-  .stages{display:grid;grid-template-columns:1fr 1fr;gap:22px}
-  @media (max-width:760px){.stages{grid-template-columns:1fr}}
-  .stage{
-    border:1px solid var(--border);border-radius:14px;background:var(--surface);padding:26px;position:relative;
-  }
-  .stage .tag{
-    display:inline-flex;align-items:center;gap:8px;font-family:"IBM Plex Mono",monospace;font-size:.78rem;
-    color:var(--faint);margin-bottom:14px;
-  }
-  .stage .tag b{color:var(--cyan-ink);font-weight:600}
-  .stage h3{margin-bottom:10px}
-  .stage p{color:var(--muted);font-size:.98rem;margin-bottom:0}
-  .stage ul{margin:14px 0 0;padding:0;list-style:none;display:grid;gap:9px}
-  .stage ul li{display:flex;gap:10px;font-size:.95rem;color:var(--muted)}
-  .stage ul li svg{width:16px;height:16px;flex:none;color:var(--cyan);margin-top:4px}
-
-  .define{
-    margin-top:22px;border:1px dashed var(--border-strong);border-radius:12px;background:var(--bg-2);
-    padding:20px 22px;display:grid;gap:16px;
-  }
-  .define .row{display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
-  .define .term{font-weight:600;color:var(--amber-ink);min-width:120px;font-size:.98rem}
-  .define .row p{margin:0;color:var(--muted);font-size:.96rem;flex:1;min-width:240px}
-
-  /* Stats */
-  .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:1px solid var(--border);border-radius:16px;overflow:hidden;background:var(--surface)}
-  .stat{padding:30px 22px;border-right:1px solid var(--border)}
-  .stat:last-child{border-right:none}
-  .stat .v{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:clamp(1.7rem,3vw,2.3rem);letter-spacing:-.02em;line-height:1;color:var(--text)}
-  .stat.amber .v{color:var(--amber-ink)}
-  .stat .k{margin-top:12px;font-size:.86rem;color:var(--muted);line-height:1.4}
-  @media (max-width:900px){.stats{grid-template-columns:repeat(2,1fr)}
-    .stat{border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
-    .stat:nth-child(2n){border-right:none}
-    .stat:nth-last-child(-n+1){border-bottom:none}
-  }
-  @media (max-width:480px){.stats{grid-template-columns:1fr}.stat{border-right:none}}
-
-  /* Outcomes (qualitative impact) */
-  .outcomes{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-  @media (max-width:820px){.outcomes{grid-template-columns:repeat(2,1fr)}}
-  @media (max-width:460px){.outcomes{grid-template-columns:1fr}}
-  .outcome{border:1px solid var(--border);border-radius:14px;background:var(--surface);padding:24px 22px}
-  .outcome .ico{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:var(--amber-soft);color:var(--amber-ink);margin-bottom:15px}
-  .outcome .ico svg{width:20px;height:20px}
-  .outcome h3{font-size:1.02rem;margin-bottom:7px}
-  .outcome p{color:var(--muted);font-size:.93rem;margin:0;line-height:1.5}
-
-  /* Urgency statement */
-  .urgency{
-    margin-top:34px;border-left:3px solid var(--amber);padding:6px 0 6px 24px;
-    font-size:clamp(1.1rem,2.3vw,1.4rem);font-weight:500;letter-spacing:-.012em;line-height:1.4;max-width:60ch;color:var(--text);
-  }
-
-  /* Impact cards */
-  .impact{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:34px}
-  @media (max-width:760px){.impact{grid-template-columns:1fr}}
-  .icard{border:1px solid var(--border);border-radius:14px;background:var(--surface);padding:24px 26px}
-  .icard h3{margin-bottom:6px}
-  .icard .meta{font-family:"IBM Plex Mono",monospace;font-size:.82rem;color:var(--amber-ink);margin-bottom:14px}
-  .icard p{color:var(--muted);font-size:.97rem;margin:0}
-
-  /* Reasons list (detectors) */
-  .reasons{display:grid;gap:16px;margin-top:8px}
-  .reason{display:flex;gap:16px;align-items:flex-start;border:1px solid var(--border);border-radius:12px;background:var(--surface);padding:20px 22px}
-  .reason .ix{font-family:"IBM Plex Mono",monospace;color:var(--faint);font-size:.9rem;flex:none;width:26px;padding-top:2px}
-  .reason h3{font-size:1.02rem;margin-bottom:6px}
-  .reason p{margin:0;color:var(--muted);font-size:.96rem}
-
-  /* Defense */
-  .defense{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:8px}
-  @media (max-width:820px){.defense{grid-template-columns:1fr}}
-  .dcard{border:1px solid var(--border);border-radius:14px;background:var(--surface);padding:24px;border-top:2px solid var(--cyan)}
-  .dcard h3{font-size:1.05rem;margin-bottom:10px}
-  .dcard p{color:var(--muted);font-size:.95rem;margin:0}
-  .dcard .open{display:inline-block;margin-top:12px;font-family:"IBM Plex Mono",monospace;font-size:.74rem;color:var(--amber-ink);border:1px solid var(--amber-line);border-radius:999px;padding:.2rem .55rem;background:var(--amber-soft)}
-
-  /* Code / repos */
-  .repos{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:8px}
-  @media (max-width:760px){.repos{grid-template-columns:1fr}}
-  .repo{
-    display:flex;gap:16px;align-items:flex-start;border:1px solid var(--border);border-radius:14px;
-    background:var(--surface);padding:22px 24px;transition:border-color .15s ease, transform .15s ease;
-  }
-  .repo:hover{border-color:var(--cyan-line);text-decoration:none;transform:translateY(-2px)}
-  .repo .gh{width:26px;height:26px;flex:none;color:var(--text);margin-top:2px}
-  .repo h3{font-size:1.02rem;margin-bottom:5px;color:var(--text)}
-  .repo .path{font-family:"IBM Plex Mono",monospace;font-size:.8rem;color:var(--cyan-ink);word-break:break-all}
-  .repo p{margin:8px 0 0;color:var(--muted);font-size:.93rem}
-  .repo.wide{grid-column:1/-1;border-color:var(--amber-line)}
-  .repo.wide .gh{color:var(--amber)}
-
-  .dataset{display:flex;gap:16px;align-items:flex-start;border:1px solid var(--cyan-line);border-radius:14px;background:var(--surface);padding:22px 24px;margin-top:18px}
-  .dataset .ic{width:40px;height:40px;flex:none;border-radius:10px;display:grid;place-items:center;background:var(--cyan-soft);color:var(--cyan-ink)}
-  .dataset .ic svg{width:22px;height:22px}
-  .dataset h3{font-size:1.02rem;margin-bottom:5px}
-  .dataset p{margin:0 0 14px;color:var(--muted);font-size:.93rem}
-  .dataset .btn svg{width:16px;height:16px}
-
-  .terminal{
-    margin-top:26px;border:1px solid var(--border-strong);border-radius:14px;overflow:hidden;background:var(--bg-2);box-shadow:var(--shadow)
-  }
-  .terminal .bar{display:flex;align-items:center;gap:8px;padding:11px 15px;border-bottom:1px solid var(--border);color:var(--faint);font-size:.78rem}
-  .terminal .bar .d{width:9px;height:9px;border-radius:50%;background:var(--border-strong)}
-  .terminal .bar .t{margin-left:6px;font-family:"IBM Plex Mono",monospace}
-  .terminal pre{margin:0;padding:20px 18px;overflow-x:auto;font-family:"IBM Plex Mono",monospace;font-size:.83rem;line-height:1.85;color:var(--text)}
-  .terminal pre .c{color:var(--faint)}
-  .terminal pre .g{color:var(--cyan-ink)}
-  .note{margin-top:16px;font-size:.9rem;color:var(--muted);display:flex;gap:10px;align-items:flex-start}
-  .note svg{width:17px;height:17px;color:var(--cyan);flex:none;margin-top:3px}
-
-  /* Footer */
-  footer{border-top:1px solid var(--border);padding:44px 0 60px;background:var(--bg-2)}
-  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:32px;align-items:start}
-  @media (max-width:700px){.foot-grid{grid-template-columns:1fr}}
-  .cite{border:1px solid var(--border);border-radius:12px;background:var(--surface);padding:18px 20px;font-size:.9rem;color:var(--muted)}
-  .cite .ttl{color:var(--text);font-weight:600;margin-bottom:4px}
-  .foot-links{display:grid;gap:10px;font-size:.94rem}
-  .foot-links a{color:var(--muted)}
-  .foot-links a:hover{color:var(--text)}
-  .ethics{margin-top:26px;font-size:1rem;color:var(--faint);max-width:250ch;line-height:1.6}
-
-  /* Scope animation (single orchestrated moment) */
-  .sweep{transform:translateX(0)}
-  @keyframes sweep{
-    0%{transform:translateX(-6px);opacity:0}
-    12%{opacity:.9}
-    100%{transform:translateX(500px);opacity:0}
-  }
-  @media (prefers-reduced-motion: no-preference){
-    .sweep{animation:sweep 3.4s cubic-bezier(.4,0,.2,1) .5s 1 both}
-  }
-  @media (prefers-reduced-motion: reduce){.sweep{display:none}html{scroll-behavior:auto}}
-
-  /* Video modal */
-  .vmodal[hidden]{display:none}
-  .vmodal{
-    position:fixed;inset:0;z-index:100;display:grid;place-items:center;
-    padding:24px;padding-top:calc(24px + env(safe-area-inset-top,0px));padding-bottom:calc(24px + env(safe-area-inset-bottom,0px));
-  }
-  .vmodal-backdrop{position:absolute;inset:0;background:rgba(4,9,14,.74);backdrop-filter:blur(4px)}
-  .vmodal-dialog{
-    position:relative;width:min(900px,100%);background:var(--surface);border:1px solid var(--border-strong);
-    border-radius:16px;box-shadow:var(--shadow);overflow:hidden;
-  }
-  .vmodal-close{
-    position:absolute;top:10px;right:10px;z-index:2;width:38px;height:38px;border-radius:9px;
-    border:1px solid var(--border);background:color-mix(in srgb, var(--surface) 72%, transparent);
-    color:var(--text);cursor:pointer;display:grid;place-items:center;
-  }
-  .vmodal-close:hover{border-color:var(--border-strong)}
-  .vmodal-frame{position:relative;aspect-ratio:16/9;background:#05090e;display:grid;place-items:center}
-  .vmodal-frame video{width:100%;height:100%;display:block;object-fit:contain;background:#000}
-  .vmodal-ph{
-    position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
-    color:var(--muted);background:radial-gradient(440px 240px at 50% 42%, var(--cyan-soft), transparent 70%);
-  }
-  .vmodal-play{width:74px;height:74px;border-radius:50%;display:grid;place-items:center;background:var(--amber);color:#0b141d}
-  .vmodal-play svg{width:30px;height:30px;margin-left:4px}
-  .vmodal-ph p{margin:0;font-size:.95rem;letter-spacing:.02em}
-</style>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -404,6 +30,7 @@
       <a href="#stealth">Why it hides</a>
       <a href="#defend">Defenses</a>
       <a href="#code">Code</a>
+      <a href="faq.html">FAQ</a>
     </nav>
     <div class="nav-actions">
       <button class="icon-btn" id="theme" aria-label="Switch color theme" title="Switch theme">
@@ -448,6 +75,10 @@
         <a class="btn btn-ghost" href="#code">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.42c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.2 1.77 1.2 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.26.73-1.55-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.2-3.1-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.77.11 3.06.75.81 1.2 1.84 1.2 3.1 0 4.43-2.7 5.4-5.27 5.69.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg>
           Browse the repos
+        </a>
+        <a class="btn btn-ghost" href="faq.html">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M9.3 9.2a2.7 2.7 0 0 1 5.3.8c0 1.8-2.6 2.1-2.6 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="17.3" r="1.05" fill="currentColor"/></svg>
+          FAQ
         </a>
       </div>
     </div>
@@ -693,49 +324,57 @@
       <p>PLCs talk to SCADA in a steady, repeating rhythm. Each state of the process has its own burst pattern, and that pattern shifts the moment the process is about to change state. VPN encryption hides the contents, but it can't hide when packets arrive, how big they are, or which way they're going. ICS-Sniper reconstructs the rhythm from that metadata alone.</p>
     </div>
 
-    <div class="flow">
-      <svg viewBox="0 0 900 190" role="img" aria-label="Network diagram: an ICS site with six PLCs connects over an encrypted VPN tunnel through a compromised Internet router, where the adversary sits, to cloud-hosted SCADA.">
+    <div class="how-figs">
+     <div class="how-col">
+      <div class="flow">
+        <svg viewBox="0 0 900 190" role="img" aria-label="Network diagram: an ICS site with six PLCs connects over an encrypted VPN tunnel through a compromised Internet router, where the adversary sits, to cloud-hosted SCADA.">
         <defs>
-          <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <marker id="arrow2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
             <path d="M0 0 L10 5 L0 10 z" fill="var(--cyan)"/>
           </marker>
         </defs>
         <!-- site -->
-        <rect x="24" y="34" width="170" height="122" rx="12" fill="var(--surface-2)" stroke="var(--border-strong)"/>
-        <text x="109" y="26" text-anchor="middle" fill="var(--muted)" font-size="12" font-family="IBM Plex Mono, monospace">ICS site</text>
+        <rect x="24" y="34" width="170" height="140" rx="12" fill="var(--surface-2)" stroke="var(--border-strong)"/>
+        <text x="109" y="26" text-anchor="middle" fill="var(--muted)" font-size="18" font-family="IBM Plex Mono, monospace">ICS site</text>
         <g fill="var(--burst)">
           <rect x="44" y="52" width="30" height="20" rx="4"/><rect x="80" y="52" width="30" height="20" rx="4"/><rect x="116" y="52" width="30" height="20" rx="4"/>
           <rect x="44" y="80" width="30" height="20" rx="4"/><rect x="80" y="80" width="30" height="20" rx="4"/><rect x="116" y="80" width="30" height="20" rx="4"/>
         </g>
-        <text x="95" y="128" text-anchor="middle" fill="var(--faint)" font-size="11" font-family="IBM Plex Mono, monospace">Gateway PLCs</text>
+        <text x="95" y="130" text-anchor="middle" fill="var(--faint)" font-size="17" font-family="IBM Plex Mono, monospace"><tspan x="95">Gateway</tspan><tspan x="95" dy="20">PLCs</tspan></text>
         <rect x="152" y="108" width="34" height="34" rx="7" fill="none" stroke="var(--cyan-line)"/>
-        <text x="169" y="130" text-anchor="middle" fill="var(--cyan-ink)" font-size="10" font-family="IBM Plex Mono, monospace">VPN</text>
+        <text x="169" y="130" text-anchor="middle" fill="var(--cyan-ink)" font-size="15" font-family="IBM Plex Mono, monospace">VPN</text>
 
         <!-- compromised router -->
         <rect x="378" y="40" width="144" height="110" rx="12" fill="var(--surface-2)" stroke="var(--amber-line)"/>
-        <text x="450" y="30" text-anchor="middle" fill="var(--amber-ink)" font-size="12" font-family="IBM Plex Mono, monospace">compromised router</text>
+        <text x="450" y="30" text-anchor="middle" fill="var(--amber-ink)" font-size="18" font-family="IBM Plex Mono, monospace">compromised router</text>
         <!-- reticle icon -->
         <g stroke="var(--amber)" stroke-width="1.8" fill="none">
           <circle cx="450" cy="86" r="20"/>
           <path d="M450 60v9M450 103v9M424 86h9M467 86h9" stroke-linecap="round"/>
         </g>
         <circle cx="450" cy="86" r="2.4" fill="var(--amber)"/>
-        <text x="450" y="138" text-anchor="middle" fill="var(--faint)" font-size="11" font-family="IBM Plex Mono, monospace">adversary</text>
+        <text x="450" y="138" text-anchor="middle" fill="var(--faint)" font-size="17" font-family="IBM Plex Mono, monospace">adversary</text>
 
         <!-- cloud SCADA -->
-        <rect x="706" y="34" width="170" height="122" rx="12" fill="var(--surface-2)" stroke="var(--border-strong)"/>
-        <text x="791" y="26" text-anchor="middle" fill="var(--muted)" font-size="12" font-family="IBM Plex Mono, monospace">cloud-hosted SCADA</text>
+        <rect x="706" y="34" width="170" height="140" rx="12" fill="var(--surface-2)" stroke="var(--border-strong)"/>
+        <text x="791" y="26" text-anchor="middle" fill="var(--muted)" font-size="18" font-family="IBM Plex Mono, monospace">cloud-hosted SCADA</text>
         <path d="M746 96a20 20 0 0 1 6-39 26 26 0 0 1 49-4 20 20 0 0 1 6 43z" fill="none" stroke="var(--border-strong)" stroke-width="1.6"/>
         <rect x="713" y="108" width="34" height="34" rx="7" fill="none" stroke="var(--cyan-line)"/>
-        <text x="730" y="130" text-anchor="middle" fill="var(--cyan-ink)" font-size="10" font-family="IBM Plex Mono, monospace">VPN</text>
+        <text x="730" y="130" text-anchor="middle" fill="var(--cyan-ink)" font-size="15" font-family="IBM Plex Mono, monospace">VPN</text>
 
         <!-- links -->
-        <line x1="196" y1="96" x2="372" y2="96" stroke="var(--cyan)" stroke-width="2" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
-        <line x1="528" y1="96" x2="700" y2="96" stroke="var(--cyan)" stroke-width="2" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
-    <figure class="scope" style="margin:8px 0 0;max-width:600px">
+        <line x1="196" y1="96" x2="372" y2="96" stroke="var(--cyan)" stroke-width="2" marker-start="url(#arrow2)" marker-end="url(#arrow2)"/>
+        <line x1="528" y1="96" x2="700" y2="96" stroke="var(--cyan)" stroke-width="2" marker-start="url(#arrow2)" marker-end="url(#arrow2)"/>
+        </svg>
+      </div>
+           <p class="cap">Where the adversary sits: a single compromised router on the public-Internet hop between the on-site PLCs and the cloud SCADA. From there it watches the encrypted VPN flow and drops packets &mdash; without entering either network.</p>
+     </div>
+
+     <div class="how-col">
+      <figure class="scope">
       <div class="scope-head">
         <span class="dot"></span><span class="dot"></span><span class="dot a"></span>
-        <span class="n";font-size:3rem>Encrypted VPN flow · Adversary's view</span>
+        <span class="label">Encrypted VPN flow · Adversary's view</span>
       </div>
       <svg viewBox="0 0 500 214" role="img" aria-label="Traffic scope: PLC 1 bursts at period P1 and PLC 2 at a shorter period P2, so the shared-tunnel pattern repeats every superperiod L = LCM(P1,P2). In the second superperiod PLC 2's seventh burst changes (a state transition), so that whole superperiod is critical and dropped; the pattern then continues.">
         <!-- critical (dropped) superperiod band -->
@@ -806,8 +445,10 @@
         <text x="140" y="205" text-anchor="middle" fill="var(--cyan-ink)" font-size="11" font-family="IBM Plex Mono, monospace">L = LCM(P&#8321;, P&#8322;)</text>
         <text x="320" y="205" text-anchor="middle" fill="var(--cyan-ink)" font-size="11" font-family="IBM Plex Mono, monospace">L</text>
       </svg>
-    </figure>
-    <p class="cap">Each PLC sends bursts at its own fixed period (P₁, P₂), so the shared-tunnel pattern repeats every superperiod L = LCM(P₁, P₂). A changed burst (amber) betrays a state transition, so ICS-Sniper flags that whole superperiod as critical and drops it (red). The cycle keeps repeating through the rest of the operation.</p>
+      </figure>
+      <p class="cap">Each PLC sends bursts at its own fixed period (P₁, P₂), so the shared-tunnel pattern repeats every superperiod L = LCM(P₁, P₂). A changed burst (amber) betrays a state transition, so ICS-Sniper flags that whole superperiod as critical and drops it (red). The cycle keeps repeating through the rest of the operation.</p>
+     </div>
+    </div>
 
     <div class="stages" style="margin-top:34px">
       <div class="stage">
@@ -917,11 +558,11 @@
     <div class="defense">
       <div class="dcard"><h3>Shape the traffic (without affecting performance)</h3>
         <!-- <p>Pad and re-time packets so the periodic burst pattern no longer leaks when a state change is coming. The catch: PLC packet timings tuned for control performance, so hiding the rhythm without hurting the process is hard. -->
-      <span class="open">open challenge</span></p></div>
+      <span class="open">open challenge</span></div>
       <div class="dcard"><h3>Diversify the path</h3><p>So a single compromised hop can't blackhole the flow.</p></div>
       <div class="dcard"><h3>Poll for liveness, on rhythm</h3>
         <!-- <p>Actively probe the site-to-SCADA link in sync with each PLC's period so a silent gap becomes visible —  promising but non-trivial detection direction. -->
-          <span class="open">open challenge</span></p></div>
+          <span class="open">open challenge</span></div>
     </div>
   </div>
 </section>
@@ -1047,55 +688,6 @@ git clone https://github.com/ICS-Sniper/ENIP-U-software-testbed<span class="g">.
   </div>
 </div>
 
-<script>
-  // Theme toggle with guarded persistence
-  (function(){
-    var root=document.documentElement, btn=document.getElementById('theme');
-    var stored=null;
-    try{ stored=localStorage.getItem('ics-sniper-theme'); }catch(e){}
-    if(stored==='light'||stored==='dark'){ root.setAttribute('data-theme',stored); }
-    btn.addEventListener('click',function(){
-      var cur=root.getAttribute('data-theme')||'dark';
-      var next=cur==='dark'?'light':'dark';
-      root.setAttribute('data-theme',next);
-      try{ localStorage.setItem('ics-sniper-theme',next); }catch(e){}
-    });
-  })();
-
-  // Mobile menu
-  (function(){
-    var m=document.getElementById('menu'), links=document.getElementById('navlinks');
-    m.addEventListener('click',function(){
-      var open=links.classList.toggle('open');
-      m.setAttribute('aria-expanded',open?'true':'false');
-    });
-    links.addEventListener('click',function(e){
-      if(e.target.tagName==='A'){ links.classList.remove('open'); m.setAttribute('aria-expanded','false'); }
-    });
-  })();
-
-  // Short-video modal
-  (function(){
-    var modal=document.getElementById('videoModal');
-    var btn=document.getElementById('videoBtn');
-    var player=document.getElementById('videoPlayer');
-    var source=document.getElementById('videoSource');
-    if(!modal||!btn) return;
-    function hasVideo(){ return source && source.getAttribute('src'); }
-    function open(){
-      modal.hidden=false;
-      document.body.style.overflow='hidden';
-      if(hasVideo()){ try{ player.currentTime=0; var p=player.play(); if(p&&p.catch){p.catch(function(){});} }catch(e){} }
-    }
-    function close(){
-      modal.hidden=true;
-      document.body.style.overflow='';
-      try{ player.pause(); }catch(e){}
-    }
-    btn.addEventListener('click',open);
-    Array.prototype.forEach.call(modal.querySelectorAll('[data-vclose]'),function(el){ el.addEventListener('click',close); });
-    document.addEventListener('keydown',function(e){ if(e.key==='Escape' && !modal.hidden) close(); });
-  })();
-</script>
+<script src="main.js"></script>
 </body>
 </html>
