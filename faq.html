@@ -88,7 +88,7 @@
             <svg class="chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </summary>
           <div class="faq-a">
-            <p>It requires covert, persistent control of one ISP or provider-edge router on the path between the plant and its cloud-hosted SCADA. That is exactly the foothold granted by Cisco and Juniper router vulnerabilities publicly disclosed on search engines like Shodan, which is why we model the adversary as a rogue ISP insider or a nation-state actor. Gaining that foothold is non-trivial and is not something our released artifacts provide.</p>
+            <p>It requires covert, persistent control of one ISP or provider-edge router on the path between the plant and its cloud-hosted SCADA. Publicly disclosed Cisco and Juniper router vulnerabilities grant exactly this foothold, and search engines like Shodan can locate the exposed devices. These are realistic capabilities for a rogue ISP insider or a nation-state actor. However, gaining that foothold is non-trivial and is not something our released artifacts provide.</p>
           </div>
         </details>
         <details class="faq-item">
@@ -97,7 +97,7 @@
             <svg class="chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </summary>
           <div class="faq-a">
-            <p>No. The reference SWaT plant’s OT network is air-gapped and not Internet-connected, so the attack cannot be turned against it. All our experiments ran on simulated and cloud-based testbeds with no physical components.</p>
+            <p>No. The reference SWaT plant’s OT network is air-gapped and not Internet-connected, so the attack cannot be turned against it. All experiments were run on lab testbeds. One has software-simulated controllers, another has real industrial PLCs, and both have simulated mechanical components. No experiment touched a live plant.</p>
           </div>
         </details>
       </div>
@@ -152,7 +152,7 @@
             <svg class="chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </summary>
           <div class="faq-a">
-            <p>On our water-treatment testbeds, one attack delayed the start of purified-water distribution by about 15 minutes; another caused a loss of already-treated water for 9 minutes 11 seconds. Such stalls delay clean water supply, waste treated water, and slow down production. In a real deployment, these effects would ripple outward to downstream facilities and the communities that depend on the supply.</p>
+            <p>On our software-PLC testbed, one attack delayed the start of purified-water distribution by about 15 minutes; another caused a loss of already-treated water for 9 minutes 11 seconds. Such stalls delay clean water supply, waste treated water, and slow down production. In a real deployment, these effects would ripple outward to downstream facilities and the communities that depend on the supply.</p>
           </div>
         </details>
         <details class="faq-item">
@@ -161,7 +161,7 @@
             <svg class="chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </summary>
           <div class="faq-a">
-            <p>Those are the four standard NIST/AWS safeguards, and ICS-Sniper is designed to bypass all of them. The VPN is the very channel it reads; the monitored detectors are built for volume spikes, not for a handful of well-timed drops. In our evaluation against an ensemble of eight state-of-the-art ICS detectors, no monitored detector flagged the attack before the plant’s performance had already degraded.</p>
+            <p>Those are the four standard NIST/AWS safeguards, and ICS-Sniper evades all of them. It reads only the metadata the VPN leaves exposed; the detectors are built for volume spikes, not a handful of well-timed drops. In our evaluation against an ensemble of eight state-of-the-art ICS detectors, none of the detectors flagged the attack before the plant’s performance had already degraded.</p>
           </div>
         </details>
         <details class="faq-item">
@@ -202,7 +202,7 @@
             <svg class="chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </summary>
           <div class="faq-a">
-            <p>We release the attack code, the detector ensemble, implementation details of two types of testbeds, and the captured network traces, so others can reproduce our results and build detection and mitigation techniques on top of them. The safeguards are contextual: everything pertains to emulated testbeds with no physical components, and running the attack in the wild still requires covert control of an on-path router, which the artifacts do not provide.</p>
+            <p>We release the attack code, the detector ensemble, implementation details of two types of testbeds, and the captured network traces, so others can reproduce our results and build detection and mitigation techniques on top of them. The safeguards are contextual. All experiments were run on lab testbeds. One has software-simulated controllers, another has real industrial PLCs, and both have simulated mechanical components. No experiment touched a live plant. Running the attack in the wild still requires covert control of an on-path router, which the artifacts do not provide.</p>
           </div>
         </details>
       </div>
@@ -219,7 +219,7 @@
         <div class="ttl">ICS-Sniper: A Targeted Blackhole Attack on Encrypted ICS Traffic</div>
         To appear at the Network and Distributed System Security (NDSS) Symposium 2027, Seoul, Republic of Korea.
       </div>
-      <p class="ethics">Responsible disclosure: all attacks were run only on simulated and cloud-based testbeds. The reference SWaT plant's real OT system is not connected to the Internet, so this work cannot be used against it. Published to help operators and researchers build stronger defenses for cloud-connected OT networks — not to enable attacks.</p>
+      <p class="ethics">Responsible disclosure: All experiments were run on lab testbeds. One has software-simulated controllers, another has real industrial PLCs, and both have simulated mechanical components. No experiment touched a live plant. The reference SWaT plant's real OT system is not connected to the Internet, so this work cannot be used against it. Published to help operators and researchers build stronger defenses for cloud-connected OT networks — not to enable attacks.</p>
     </div>
   </div>
 </footer>
