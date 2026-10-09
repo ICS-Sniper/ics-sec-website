@@ -67,7 +67,7 @@
       <p class="lede">Industrial plants are moving their Supervisory Control and Data Acquisition (SCADA) systems to the cloud. This puts the link between on-site equipment and the SCADA out on the public Internet, albeit VPN-encrypted. ICS-Sniper shows that an on-path attacker can disrupt the plant operations by reading only the shape of that encrypted traffic (i.e., packet sizes, timing, and direction) and dropping a small, precisely chosen set of packets.</p>
       <ul class="nots">
         <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> No decryption</li>
-        <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> No network access</li>
+        <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> No access to the plant's network</li>
         <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> No knowledge of the control logic</li>
       </ul>
       <div class="hero-cta">
@@ -210,9 +210,9 @@
       <div class="author">
         <div class="avatar"><img src="./images/chanyuan.jpg" alt="Chanyuan Liu"></div>
         <div class="name">Chanyuan Liu</div>
-        <div class="role">Research Engineer</div>
+        <div class="role">Research Programmer</div>
         <div class="aff">ECE, UBC</div>
-        <a class="site" href="./index.html#authors" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M3 12h18" stroke="currentColor" stroke-width="1.7"/><path d="M12 3c2.6 2.7 4 6 4 9s-1.4 6.3-4 9c-2.6-2.7-4-6-4-9s1.4-6.3 4-9Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>Website</a>
+        <a class="site" href="https://www.linkedin.com/in/chanyuanl/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M3 12h18" stroke="currentColor" stroke-width="1.7"/><path d="M12 3c2.6 2.7 4 6 4 9s-1.4 6.3-4 9c-2.6-2.7-4-6-4-9s1.4-6.3 4-9Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>Website</a>
       </div>
 
       <div class="author">
@@ -258,7 +258,7 @@
       <div class="driver"><h3>Built-in resilience</h3><p>Cloud providers offer uptime guarantees that on-site systems can't match at low cost.</p></div>
     </div>
 
-    <p class="shift-note">The trade-off: The plant's some of the most time-sensitive control traffic now crosses the open Internet. To protect it, operators follow the standard NIST recommendations and AWS playbook — <b>authenticate the endpoints, add a firewall and intrusion detection, wrap the traffic in a VPN, and watch for high-volume denial-of-service.</b> This is exactly the architecture ICS-Sniper targets, and it slips past all four safeguards.</p>
+    <p class="shift-note">The trade-off: Some of the plant's most time-sensitive control traffic now crosses the open Internet. To protect it, operators follow the standard NIST recommendations and AWS playbook — <b>authenticate the endpoints, add a firewall and intrusion detection, wrap the traffic in a VPN, and watch for high-volume denial-of-service.</b> This is exactly the architecture ICS-Sniper targets, and it slips past all four safeguards.</p>
 
     <div class="flow">
       <svg viewBox="0 0 900 190" role="img" aria-label="Network diagram: an ICS site with six PLCs connects over an encrypted VPN tunnel through a compromised Internet router, where the adversary sits, to cloud-hosted SCADA.">
@@ -312,7 +312,7 @@
   <div class="wrap tldr-grid">
     <div>
       <span class="kicker">The short version</span>
-      <p class="statement">An on-path adversary can degrade a safety-critical plant by dropping under 5% of its packets — and stay invisible to today's detectors.</p>
+      <p class="statement">An on-path adversary can degrade a safety-critical plant by dropping under 5% of its packets — and go undetected by today's detectors until the damage is done.</p>
     </div>
     <div class="facts">
       <div class="fact"><span class="n">Who</span><p>A rogue insider at an ISP, or a nation-state with access to a router on the path — the same foothold behind recent <strong>Cisco and Juniper</strong> router vulnerabilities.</p></div>
