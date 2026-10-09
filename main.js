@@ -30,23 +30,22 @@
   });
 })();
 
-// Short-video modal
+// Short-video modal (YouTube embed)
 (function(){
   var modal=document.getElementById('videoModal');
   var btn=document.getElementById('videoBtn');
-  var player=document.getElementById('videoPlayer');
-  var source=document.getElementById('videoSource');
+  var frame=document.getElementById('videoFrame');
   if(!modal||!btn) return;
-  function hasVideo(){ return source && source.getAttribute('src'); }
+  var embed=frame?frame.getAttribute('data-embed'):'';
   function open(){
     modal.hidden=false;
     document.body.style.overflow='hidden';
-    if(hasVideo()){ try{ player.currentTime=0; var p=player.play(); if(p&&p.catch){p.catch(function(){});} }catch(e){} }
+    if(frame&&embed){ frame.src=embed; }   // load + autoplay the embed
   }
   function close(){
     modal.hidden=true;
     document.body.style.overflow='';
-    try{ player.pause(); }catch(e){}
+    if(frame){ frame.src=''; }              // unload to stop playback
   }
   btn.addEventListener('click',open);
   Array.prototype.forEach.call(modal.querySelectorAll('[data-vclose]'),function(el){ el.addEventListener('click',close); });
