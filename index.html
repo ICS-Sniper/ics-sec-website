@@ -13,21 +13,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ICS-Sniper</title>
 <meta name="description" content="ICS-Sniper disrupts cloud-connected industrial control systems by dropping a small set of encrypted packets — without breaking encryption, entering the network, or knowing the control logic.">
-<!-- Social preview / favicon.  NOTE: replace https://REPLACE-WITH-YOUR-DOMAIN below with your deployed site URL
-     so og:image and og:url are absolute (required by Facebook / LinkedIn / Twitter). -->
+<!-- Social preview -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ICS-Sniper">
 <meta property="og:title" content="ICS-Sniper — a targeted blackhole attack on encrypted ICS traffic">
 <meta property="og:description" content="ICS-Sniper disrupts cloud-connected industrial control systems by dropping a small set of encrypted packets — without breaking encryption, entering the network, or knowing the control logic.">
-<meta property="og:url" content="https://REPLACE-WITH-YOUR-DOMAIN/">
-<meta property="og:image" content="https://REPLACE-WITH-YOUR-DOMAIN/images/og-image.png">
+<meta property="og:url" content="https://ics-sniper.github.io/ics-sec-website/">
+<meta property="og:image" content="https://ics-sniper.github.io/ics-sec-website/images/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="ICS-Sniper: a targeted blackhole attack on encrypted ICS traffic — site, encrypted VPN link with dropped packets under a crosshair, and cloud SCADA.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="ICS-Sniper — a targeted blackhole attack on encrypted ICS traffic">
 <meta name="twitter:description" content="ICS-Sniper disrupts cloud-connected industrial control systems by dropping a small set of encrypted packets — without breaking encryption, entering the network, or knowing the control logic.">
-<meta name="twitter:image" content="https://REPLACE-WITH-YOUR-DOMAIN/images/og-image.png">
+<meta name="twitter:image" content="https://ics-sniper.github.io/ics-sec-website/images/og-image.png">
 <meta name="theme-color" content="#0b141d">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%230b141d%22/%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23ffb020%22%20stroke-width%3D%222.1%22%3E%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%229%22/%3E%3Cpath%20d%3D%22M16%203v5M16%2024v5M3%2016h5M24%2016h5%22%20stroke-linecap%3D%22round%22/%3E%3C/g%3E%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%222.1%22%20fill%3D%22%23ffb020%22/%3E%3C/svg%3E" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -51,6 +50,7 @@
     <nav class="nav-links" id="navlinks">
       <a href="#threat">The threat</a>
       <a href="#how">How it works</a>
+      <a href="#testbed">Testbed</a>
       <a href="#results">Results</a>
       <a href="#stealth">Why it hides</a>
       <a href="#defend">Defenses</a>
@@ -506,6 +506,46 @@
   </div>
 </section>
 
+<!-- ================= TESTBED ================= -->
+<section id="testbed" class="band tint">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kicker">A reproducible testbed for cloud-connected SCADA</span>
+      <p>Studying this attack needed an ICS testbed where the SCADA runs in the cloud and communicates with the plant's on-site PLCs over a VPN. Such a testbed did not exist when we started our research. So we built our own. Our testbed resembles the setup real utilities are now adopting. We have released the implementation details and the code, so anyone can reproduce the attack and test defenses without a live plant.</p>
+      <p>We built two versions of the same six-stage Secure Water Treatment (SWaT) plant setup. One is built with real PLCs, while the other is fully software-simulated. Both versions reproduce the control logic of a multi-stage water-treatment process modeled on SWaT, a widely used reference plant, but host its SCADA in the cloud and carry the site-to-SCADA traffic over OpenVPN. The mechanical process is fully simulated, so no water, pumps, or live equipment are ever involved. The configurations are listed as follows:</p>
+    </div>
+
+    <div class="tb-cards">
+      <div class="tb-card">
+        <span class="k">hardware · Modbus</span>
+        <h3>H-SWaT</h3>
+        <p>Real Allen-Bradley Micro800 PLCs running connected Modbus/TCP over OpenVPN.</p>
+      </div>
+      <div class="tb-card">
+        <span class="k">software · Modbus</span>
+        <h3>S-SWaT (Modbus)</h3>
+        <p>Software-simulated PLCs running unconnected Modbus/TCP over OpenVPN.</p>
+      </div>
+      <div class="tb-card">
+        <span class="k">software · ENIP</span>
+        <h3>S-SWaT (ENIP)</h3>
+        <p>Software-simulated PLCs running unconnected ENIP/TCP over OpenVPN.</p>
+      </div>
+    </div>
+
+        <ul class="tb-points">
+          <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l5 5 9-11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Real and simulated controllers.</b> The hardware version runs real Allen-Bradley Micro800 PLCs for realistic timing; the software version runs simulated PLCs for fast experimentation.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l5 5 9-11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Two OT protocols.</b> Modbus/TCP and EtherNet/IP (ENIP), to study whether ICS-Sniper generalizes across OT communication protocols.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l5 5 9-11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Real traffic, safe process.</b> Genuine encrypted VPN traffic and control timing over a simulated physical plant, with no connection to any live system.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l5 5 9-11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Open and reproducible.</b> Released with the captured network traces, so the profiling and detection results reproduce with no special hardware.</span></li>
+        </ul>
+
+    <figure class="tb-figure tb-figure-wide">
+      <img src="./images/testbed.jpg" alt="H-SWaT hardware testbed: six real Allen-Bradley Micro820 PLCs connect through an Ethernet switch to a laptop acting as the site OpenVPN gateway and physical-process simulator; the cloud SCADA runs on an Amazon EC2 VM, and the OpenVPN tunnel is routed through a second EC2 VM that simulates a compromised on-path router running ICS-Sniper.">
+    </figure>
+  </div>
+</section>
+
 <!-- ================= RESULTS ================= -->
 <section id="results" class="band tint">
   <div class="wrap">
@@ -682,6 +722,7 @@ git clone https://github.com/ICS-Sniper/ENIP-U-software-testbed<span class="g">.
         To appear at the Network and Distributed System Security (NDSS) Symposium 2027, Seoul, Republic of Korea.
       </div>
       <p class="ethics">Responsible disclosure: All experiments were run on lab testbeds. One has software-simulated controllers, another has real industrial PLCs, and both have simulated mechanical components. No experiment touched a live plant. The reference SWaT plant's real OT system is not connected to the Internet, so this work cannot be used against it. Published to help operators and researchers build stronger defenses for cloud-connected OT networks — not to enable attacks.</p>
+      <p>This site uses Google Analytics to count the number of visits.</p>
     </div>
     <!-- <nav class="foot-links" aria-label="Footer">
       <a href="#how">How the attack works</a>
