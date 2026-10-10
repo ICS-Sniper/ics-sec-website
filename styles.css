@@ -439,7 +439,8 @@ footer{border-top:1px solid var(--border);padding:44px 0 60px;background:var(--b
 }
 .tb-ph svg{width:46px;height:46px;opacity:.75}
 .tb-ph .hint{font-family:"IBM Plex Mono",monospace;font-size:.82rem}
-.tb-figure figcaption{margin-top:12px;font-size:.92rem;color:var(--faint);text-align:center}
+.tb-figure figcaption{margin-top:14px;font-size:.95rem;color:var(--faint);text-align:left;line-height:1.5}
+.tb-figure figcaption b{color:var(--text);font-weight:600}
 .tb-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:34px}
 @media (max-width:820px){.tb-cards{grid-template-columns:1fr}}
 .tb-card{border:1px solid var(--border);border-radius:14px;background:var(--surface);padding:22px 24px;border-top:2px solid var(--cyan)}

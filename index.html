@@ -542,6 +542,7 @@
 
     <figure class="tb-figure tb-figure-wide">
       <img src="./images/testbed.jpg" alt="H-SWaT hardware testbed: six real Allen-Bradley Micro820 PLCs connect through an Ethernet switch to a laptop acting as the site OpenVPN gateway and physical-process simulator; the cloud SCADA runs on an Amazon EC2 VM, and the OpenVPN tunnel is routed through a second EC2 VM that simulates a compromised on-path router running ICS-Sniper.">
+      <figcaption>Six real PLCs run SWaT's control logic and connect through one switch to a laptop that acts as the site OpenVPN gateway and simulates the physical plant. The SCADA runs on an Amazon EC2 VM, which also acts as the SCADA-side OpenVPN gateway. The site-to-SCADA OpenVPN tunnel is routed through a second EC2 VM that simulates an on-path router compromised by the adversary. The ICS-Sniper code is executed on this VM.</figcaption>
     </figure>
   </div>
 </section>
