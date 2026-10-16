@@ -450,7 +450,7 @@ footer{border-top:1px solid var(--border);padding:44px 0 60px;background:var(--b
 
 /* ---------- Media marquee (ICS-Sniper in the media) ---------- */
 /* Wide screens: the cards fit, so they sit still, left-aligned.           */
-/* Narrow screens where 3 cards (264px each) no longer fit one row (<900px) */
+/* Narrow screens where 4 cards (264px each) no longer fit one row (<1180px)*/
 /* the row turns into an auto-scrolling marquee.                           */
 .band.media-band{padding:clamp(22px,2.6vw,34px) 0}
 .media-band .sec-head{margin-bottom:12px;max-width:none}
@@ -468,7 +468,7 @@ footer{border-top:1px solid var(--border);padding:44px 0 60px;background:var(--b
 /* static (fits): show only the 3 real cards; the duplicates exist only to loop the marquee */
 .m-card[aria-hidden="true"]{display:none}
 
-@media (max-width:900px){
+@media (max-width:1180px){
   .marquee{
     -webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);
             mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);
