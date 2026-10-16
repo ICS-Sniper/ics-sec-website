@@ -449,14 +449,17 @@ footer{border-top:1px solid var(--border);padding:44px 0 60px;background:var(--b
 .tb-card p{color:var(--muted);font-size:.93rem;margin:0}
 
 /* ---------- Media marquee (ICS-Sniper in the media) ---------- */
-/* Wide screens: the cards fit, so they sit still, left-aligned.           */
-/* Narrow screens where 4 cards (264px each) no longer fit one row (<1180px)*/
-/* the row turns into an auto-scrolling marquee.                           */
+/* Always scrolls as a marquee (pauses on hover). */
 .band.media-band{padding:clamp(22px,2.6vw,34px) 0}
 .media-band .sec-head{margin-bottom:12px;max-width:none}
 .media-band .kicker{font-size:1.15rem;margin-bottom:0;letter-spacing:-.01em}
-.marquee{position:relative;overflow:hidden;margin-top:2px}
-.marquee-track{display:flex;flex-wrap:wrap;justify-content:flex-start;gap:12px}
+.marquee{position:relative;overflow:hidden;margin-top:2px;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);
+          mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}
+.marquee-track{display:flex;flex-wrap:nowrap;justify-content:flex-start;gap:12px;width:max-content;
+  animation:media-scroll 45s linear infinite}
+.marquee:hover .marquee-track{animation-play-state:paused}
+@keyframes media-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .m-card{flex:0 0 264px;display:flex;flex-direction:column;gap:6px;border:1px solid var(--border);
   border-radius:12px;background:var(--surface);padding:12px 15px;transition:border-color .15s ease}
 .m-card:hover{border-color:var(--cyan-line);text-decoration:none}
@@ -465,24 +468,10 @@ footer{border-top:1px solid var(--border);padding:44px 0 60px;background:var(--b
 .m-card .headline{color:var(--text);font-size:.85rem;font-weight:500;line-height:1.3;text-align:left;
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .m-card .date{color:var(--faint);font-size:.7rem;font-family:"IBM Plex Mono",monospace}
-/* static (fits): show only the 3 real cards; the duplicates exist only to loop the marquee */
-.m-card[aria-hidden="true"]{display:none}
 
-@media (max-width:1180px){
-  .marquee{
-    -webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);
-            mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);
-  }
-  .marquee-track{flex-wrap:nowrap;justify-content:flex-start;width:max-content;
-    animation:media-scroll 30s linear infinite}
-  .marquee:hover .marquee-track{animation-play-state:paused}
-  .m-card[aria-hidden="true"]{display:flex}
-}
-@keyframes media-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
-/* Respect reduced-motion: never animate — just show the 3 cards (they wrap/stack if narrow) */
+/* Reduced-motion: don't animate — show the real cards as a swipeable row */
 @media (prefers-reduced-motion: reduce){
-  .marquee{overflow:visible;-webkit-mask-image:none;mask-image:none}
-  .marquee-track{animation:none;flex-wrap:wrap;justify-content:flex-start;width:auto}
+  .marquee{overflow-x:auto;-webkit-mask-image:none;mask-image:none}
+  .marquee-track{animation:none}
   .m-card[aria-hidden="true"]{display:none}
 }
