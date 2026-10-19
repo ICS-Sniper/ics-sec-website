@@ -457,7 +457,7 @@ footer{border-top:1px solid var(--border);padding:44px 0 60px;background:var(--b
   -webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);
           mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}
 .marquee-track{display:flex;flex-wrap:nowrap;justify-content:flex-start;gap:12px;width:max-content;
-  animation:media-scroll 45s linear infinite}
+  animation:media-scroll 60s linear infinite}
 .marquee:hover .marquee-track{animation-play-state:paused}
 @keyframes media-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .m-card{flex:0 0 264px;display:flex;flex-direction:column;gap:6px;border:1px solid var(--border);
